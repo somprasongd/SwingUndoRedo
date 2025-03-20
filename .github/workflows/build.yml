@@ -1,0 +1,32 @@
+name: Build JAR with Ant
+
+on:
+  push:
+    branches:
+      - main  # Change if needed
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # Eclipse Temurin (AdoptOpenJDK)
+          java-version: '8'        # Change to match your NetBeans project
+
+      - name: Build with Ant
+        run: ant jar
+
+      - name: Upload JAR as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-jar
+          path: dist/*.jar  # Adjust path based on NetBeans output
