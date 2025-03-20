@@ -21,9 +21,12 @@ jobs:
         with:
           distribution: 'temurin'  # Eclipse Temurin (AdoptOpenJDK)
           java-version: '8'        # Change to match your NetBeans project
+          
+      - name: Set JDK Home
+        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
       - name: Build with Ant
-        run: ant jar
+        run: ant -Dplatforms.JDK_1.8_openjdk.home=$JAVA_HOME jar
 
       - name: Upload JAR as Artifact
         uses: actions/upload-artifact@v4

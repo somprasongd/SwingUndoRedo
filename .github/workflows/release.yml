@@ -18,9 +18,12 @@ jobs:
         with:
           distribution: 'temurin'  # Use Eclipse Temurin (AdoptOpenJDK)
           java-version: '8'       # Adjust to your project's Java version
+          
+      - name: Set JDK Home
+        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
       - name: Build with Ant
-        run: ant jar
+        run: ant -Dplatforms.JDK_1.8_openjdk.home=$JAVA_HOME jar
 
       - name: Create GitHub Release
         id: create_release
